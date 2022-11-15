@@ -75,7 +75,7 @@ hyperparameter_ranges = {
 
 The Table bellow shows the result of all hyperparameter tuning jobs ordered by final objective value.
 
-![table of hyperparameters](LINK FOR TABLE OF HYPERPARAMETERS HERE!................................)
+![table of hyperparameters](./hyperparametertunning-table.jpeg)
 
 **Figure 1**: Table of hyperparameters
 <br />
@@ -97,17 +97,11 @@ The API allows the user to use the model to classify a yoga pose in an image fil
 
 ### API Workflow:
 
-![API diagram](./hyperparametertunning-table.jpeg)
+![API diagram](./yoga-pose-api-diagram.png)
 
 **Figure 2**: Yoga pose API diagram
 <br />
 <br />
-
-		Model Endpoint
-		      ^
-		      |
-HTML code <---> AWS Lambda <---> API Gateway <---> webapp (user)
-
 
 ## Results/Insights and possible applications
 ....................................
