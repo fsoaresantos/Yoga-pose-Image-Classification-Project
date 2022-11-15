@@ -54,10 +54,11 @@ The response body will be in JSON format and will contain the input image, the c
 `Please upload a valid image file OR click the Classify button to use one of our images.`
 
 2) If predicted value does not match any wikipedia page :
+<pred>
+Issue: Page id "<predicted_value>" does not match any pages. Try another id!
 
-`Issue: Page id "<predicted_value>" does not match any pages. Try another id! <br />
 Sorry, there is no wikipedia content to show here!`
-
+</pred>
 
 
 
