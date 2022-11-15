@@ -24,22 +24,7 @@ The request body needs to be in JSON format and include the following properties
  - `ground_truth` - string - optional
  - `is_user_data` - string - "true" if a data is submited or empty for no data
 
-Example 1: the user submits an image for classification
-
-```
-{
-htmlMethod: POST
-headers: {"Content-Type": "application/json"}
-
-body: {
-    "data": "",
-    "ground_truth": "",
-    "is_user_data": ""
-}
-}
-```
-
-Example 2: no data is submited - user chose to use an image from the validation dataset
+Example: no data is submited - the user chose to use an image from the validation dataset
 ```
 {
 htmlMethod: POST
