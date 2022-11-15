@@ -15,7 +15,7 @@ The code is written in Sagemaker Python SDK, with few lines in boto3 and AWS CLI
 The project was shared into 4 notebooks to facilitate comprehension of the ML pipeline.
 The notebooks illustrate the steps of data ETL, model definition and hyperparameter tuning, profiler and debugger, and model training and deployment.
 
-### 1) ETL notebook: `convert_image_mode2rgb.ipynb`
+### 1) Data ETL notebook: `convert_image_mode2rgb.ipynb`
 
 Tha dataset is downloaded and explored. Some issues are fixed and the images mode are converted to 3-channel RGB mode.
 The original Yoga Pose Image Classification dataset can be downloaded from kaggle:
