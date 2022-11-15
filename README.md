@@ -21,8 +21,7 @@ Tha dataset is downloaded and explored. Some issues are fixed and the images mod
 The original Yoga Pose Image Classification dataset can be downloaded from kaggle:
 https://www.kaggle.com/datasets/shrutisaxena/yoga-pose-image-classification-dataset (shrutisaxena/yoga-pose-image-classification-dataset).
 The transfrmed dataset, used to finetune the model in this project, is composed of 3-channel RGB mode images only, is also available at kaggle: https://www.kaggle.com/datasets/franciscadossantos/rgb-only-yoga-pose-dataset (franciscadossantos/rgb-only-yoga-pose-dataset).
-The convertion methods, as well as the Python code used to convert the images mode are available at the GitHub repository
-https://github.com/fsoaresantos/Yoga-pose-Image-Classification-Project
+To know more about the convertion methods used to transform the images mode see the notebook [convert_image_mode2rgb.ipynb](./convert_image_mode2rgb.ipynb).
 
 
 ### 2) Model definition and Hyperparameter tuning notebook: `hyperparameter_tuning.ipynb`
