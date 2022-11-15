@@ -32,11 +32,11 @@ The model is finetuned in AWS Sagemaker using PyTorch as ML framework. Finetunin
 1- Hyperparameter Tuning Job
 
 ```json
-hyperparameter_ranges = {
-    'lr': ContinuousParameter(0.005, 0.015, scaling_type='Logarithmic'),
-    'batch_size': CategoricalParameter([16, 20, 30, 40]),
-    'test_batch_size': CategoricalParameter([10, 16, 20]),
-    'epochs': CategoricalParameter([5, 10])
+{
+    "lr": ContinuousParameter(0.005, 0.015, scaling_type='Logarithmic'),
+    "batch_size": CategoricalParameter([16, 20, 30, 40]),
+    "test_batch_size": CategoricalParameter([10, 16, 20]),
+    "epochs": CategoricalParameter([5, 10])
 }
 ```
 
