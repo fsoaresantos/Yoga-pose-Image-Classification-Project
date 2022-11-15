@@ -61,9 +61,3 @@ The response body will be in JSON format and will contain the input image, the c
   > 
   > Sorry, there is no wikipedia content to show here!\`
 
-
-
-
-
-
-
