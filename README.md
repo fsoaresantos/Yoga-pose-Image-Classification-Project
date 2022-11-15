@@ -18,10 +18,12 @@ The notebooks illustrate the steps of data ETL, model definition and hyperparame
 ### 1) Data ETL notebook: `convert_image_mode2rgb.ipynb`
 
 Tha dataset is downloaded and explored. Some issues are fixed and the images mode are converted to 3-channel RGB mode.
-The original Yoga Pose Image Classification dataset can be downloaded from kaggle:
-https://www.kaggle.com/datasets/shrutisaxena/yoga-pose-image-classification-dataset (shrutisaxena/yoga-pose-image-classification-dataset).
-The transfrmed dataset, used to finetune the model in this project, is composed of 3-channel RGB mode images only, is also available at kaggle: https://www.kaggle.com/datasets/franciscadossantos/rgb-only-yoga-pose-dataset (franciscadossantos/rgb-only-yoga-pose-dataset).
-To know more about the convertion methods used to transform the images mode see the notebook [convert_image_mode2rgb.ipynb](./convert_image_mode2rgb.ipynb).
+
+The original Yoga Pose Image Classification dataset is also available in kaggle at the link [shrutisaxena/yoga-pose-image-classification-dataset](https://www.kaggle.com/datasets/shrutisaxena/yoga-pose-image-classification-dataset).
+
+The transfrmed dataset, used to finetune the model in this project, is composed of 3-channel RGB mode images only, and can be downloaded from kaggle: [franciscadossantos/rgb-only-yoga-pose-dataset](https://www.kaggle.com/datasets/franciscadossantos/rgb-only-yoga-pose-dataset).
+
+To know more about the convertion methods used to transform the images mode to 3-channel RGB mode see the notebook [convert_image_mode2rgb.ipynb](./convert_image_mode2rgb.ipynb).
 
 
 ### 2) Model definition and Hyperparameter tuning notebook: `hyperparameter_tuning.ipynb`
