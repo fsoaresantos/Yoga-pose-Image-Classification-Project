@@ -55,12 +55,12 @@ body: {
 
 The response body will be in JSON format and will contain the input image, the classifier prediction and the wikipedia page summary, if any, of the predicted value 
 
-`data` - base64 encoded string
-`groundtruth` - string
-`prediction` - string
-`title` - string
-`summary` - string
-`exception` - string
+ - `data` - base64 encoded string
+ - `groundtruth` - string
+ - `prediction` - string
+ - `title` - string
+ - `summary` - string
+ - `exception` - string
 
 **Possible errors**
 
