@@ -40,10 +40,13 @@ hyperparameter_ranges = {
 ```
 
 2- Warm Start Hyperparameter Tuning
-to extend the hyperparameter tuning job
+<br />
+Performed to broad the possibilities of hyperparameters tuned.
 
-3- Second Hyperparameter Tuning Job;
-to narrow the range of hyperparameters values and exclude `epoch` from the set of hyperparameter to be tunned keeping its value static and equal to 6.
+3- Second Hyperparameter Tuning Job
+<br />
+In this step the hyperparameter `epoch` is excluded from the set of hyperparameter to be tuned and its value is kept static and equal to 6.
+In addition, the range of hyperparameters to be tuned is narrowed to an interval that showed better performance in the previous step.
 
 ```
 #static hyperparameters
@@ -57,7 +60,9 @@ hyperparameter_ranges = {
 ```
 
 4- Second Warm Start Hyperparameter Tuning
-to exclude `test_batch_size` from the set of hyperparameter to be tunned and narrow the range of values of `batch_size`
+<br />
+In this step `test_batch_size` is excluded from the set of hyperparameter to be tuned and its value is kept static and equal to 20.
+The range of values of `batch_size` to be tuned is narrowed based on results of previous step.
 
 <pre>
 #static hyperparameters
