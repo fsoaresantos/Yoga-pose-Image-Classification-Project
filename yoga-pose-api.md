@@ -55,7 +55,7 @@ The response body will be in JSON format and will contain the input image, the c
 ```
 2) If predicted value does not match any wikipedia page :
 ```
-  ``Issue: Page id `<predicted_value>` does not match any pages. Try another id!``
+  `Issue: Page id "<predicted_value>" does not match any pages. Try another id!
   Sorry, there is no wikipedia content to show here!`
 ```
 
