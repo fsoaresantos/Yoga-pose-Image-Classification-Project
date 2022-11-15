@@ -66,9 +66,7 @@ hyperparameters = {
     "epochs": "6",
     "test_batch_size": "20"
 }
-</pre>
 
-<pre>
 hyperparameter_ranges = {
     "lr": ContinuousParameter(0.120, 0.125, scaling_type='Logarithmic'),
     "batch_size": CategoricalParameter([20, 30])
