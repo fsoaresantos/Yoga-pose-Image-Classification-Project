@@ -31,8 +31,8 @@ The model is finetuned in AWS Sagemaker using PyTorch as ML framework. Finetunin
 
 1- Hyperparameter Tuning Job
 
-```json
-{
+```
+hyperparameter_ranges = {
     "lr": ContinuousParameter(0.005, 0.015, scaling_type='Logarithmic'),
     "batch_size": CategoricalParameter([16, 20, 30, 40]),
     "test_batch_size": CategoricalParameter([10, 16, 20]),
@@ -45,33 +45,34 @@ to extend the hyperparameter tuning job
 
 3- Second Hyperparameter Tuning Job;
 to narrow the range of hyperparameters values and exclude `epoch` from the set of hyperparameter to be tunned keeping its value static and equal to 6.
-<pre>
-#static hyperparameters
-hyperparameters = {'epochs':'6'}
 
-```json
+```
+#static hyperparameters
+hyperparameters = {"epochs": "6"}
+
 hyperparameter_ranges = {
-    'lr': ContinuousParameter(0.015, 0.125, scaling_type='Logarithmic'),
-    'batch_size': CategoricalParameter([16, 20, 30]),
-    'test_batch_size': CategoricalParameter([16, 20])
+    "lr": ContinuousParameter(0.015, 0.125, scaling_type='Logarithmic'),
+    "batch_size": CategoricalParameter([16, 20, 30]),
+    "test_batch_size": CategoricalParameter([16, 20])
 }
 ```
-</pre>
 
 4- Second Warm Start Hyperparameter Tuning
 to exclude `test_batch_size` from the set of hyperparameter to be tunned and narrow the range of values of `batch_size`
+
 <pre>
 #static hyperparameters
-hyperparameters = {'epochs':'6', 'test_batch_size':'20'}
+hyperparameters = {
+    "epochs": "6",
+    "test_batch_size": "20"
+}
 </pre>
 
 <pre>
-```json
 hyperparameter_ranges = {
-    'lr': ContinuousParameter(0.120, 0.125, scaling_type='Logarithmic'),
-    'batch_size': CategoricalParameter([20, 30])
+    "lr": ContinuousParameter(0.120, 0.125, scaling_type='Logarithmic'),
+    "batch_size": CategoricalParameter([20, 30])
 }
-```
 </pre>
 
 The Table bellow shows the result of all hyperparameter tuning jobs ordered by final objective value.
