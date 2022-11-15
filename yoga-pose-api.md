@@ -51,7 +51,7 @@ The response body will be in JSON format and will contain the input image, the c
 
 1) When trying to upload an invalid file type:
 ```
- Please upload a valid image file OR click the Classify button to use one of our images.
+ \`Please upload a valid image file OR click the Classify button to use one of our images\`
 ```
 2) If predicted value does not match any wikipedia page :
 ```
