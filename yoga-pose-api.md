@@ -26,7 +26,7 @@ The request body needs to be in JSON format and include the following properties
 
 Example 1: the user submits an image for classification
 
-```json
+```
 {
 htmlMethod: POST
 headers: {"Content-Type": "application/json"}
@@ -40,19 +40,18 @@ body: {
 ```
 
 Example 2: no data is submited - user chose to use an image from the validation dataset
-
+```
 {
 htmlMethod: POST
 headers: {"Content-Type": "application/json"}
-```json
+
 body: {
     "data": "",
     "ground_truth": "",
     "is_user_data": ""
 }
-```
 }
-
+```
 
 The response body will be in JSON format and will contain the input image, the classifier prediction and the wikipedia page summary, if any, of the predicted value 
 
