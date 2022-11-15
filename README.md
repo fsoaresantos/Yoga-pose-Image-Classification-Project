@@ -84,7 +84,7 @@ The Table bellow shows the result of all hyperparameter tuning jobs ordered by f
 Using the best hyperparameters from hyperparameter tunning step, the model is submited to debugging. The aim of this step is to detect training issues.
 The profiler report is then saved in html format ([profiler-report.html](https://fsoaresantos.github.io/yoga-pose-ICP-profiler-reports/profiler-report.html)).
 
-## 4) Model Deployment: `train_and_deploy.ipynb`
+### 4) Model Deployment: `train_and_deploy.ipynb`
 The model is trained and deployed.
 The training process was performed over 30 epochs only, due to resource restrictions.
 The model achieved an average test loss of 0.128 and a test accuracy of 34.466%.
