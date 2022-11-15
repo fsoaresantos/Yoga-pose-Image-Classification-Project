@@ -25,6 +25,7 @@ To know more about the convertion methods used to transform the images mode see 
 
 
 ### 2) Model definition and Hyperparameter tuning notebook: `hyperparameter_tuning.ipynb`
+
 First the dataset is splited in train, validation, and test sets (with respective proportions of 0.7, 0.1, 0.2). Manifest files are created and the data is uploaded to s3.
 The model is finetuned in AWS Sagemaker using PyTorch as ML framework. Finetuning is performed in 4 steps for different ranges of the following hyperparameters: epoch, batch size, test batch size, and learning rate as described bellow:
 
@@ -91,9 +92,6 @@ The profiler report is then saved in html format ([profiler-report.html](https:/
 
 ### 4) Model Deployment: `train_and_deploy.ipynb`
 The model is trained and deployed.
-The training process was performed over 30 epochs only, due to resource restrictions.
-The model achieved an average test loss of 0.128 and a test accuracy of 34.466%.
-However an increase in the number of epochs to over 50 could probably render a higher accuracy.
 
 ## Yoga Pose API
 The API allows the user to use the model to classify a yoga pose in an image file. It can be accessed at the link:
@@ -108,7 +106,10 @@ The API allows the user to use the model to classify a yoga pose in an image fil
 <br />
 
 ## Results/Insights and possible applications
-....................................
+
+The training process was performed over 30 epochs only, due to resource restrictions. The model achieved an average test loss of 0.128 and a test accuracy of 34.466%. However, it's possible that an increase in the number of epochs to over 50 will result in a better model performance.
+
+AI can detect yoga pose and could potentially be used as an aid to accelerometers and gyroscope (which detects the speed and direction of movements) in fitness tracking applications, like Nintendo's Ring Fit Adventure, for instance, and many Yoga applications, to supervise the correct positioning of the body (body posture) during physical exercises.
 
 
 ## Important links
