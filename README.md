@@ -30,14 +30,15 @@ First the dataset is splited in train, validation, and test sets (with respectiv
 The model is finetuned in AWS Sagemaker using PyTorch as ML framework. Finetuning is performed in 4 steps for different ranges of the following hyperparameters: epoch, batch size, test batch size, and learning rate as described bellow:
 
 1- Hyperparameter Tuning Job
-`
+
+```json
 hyperparameter_ranges = {
     'lr': ContinuousParameter(0.005, 0.015, scaling_type='Logarithmic'),
     'batch_size': CategoricalParameter([16, 20, 30, 40]),
     'test_batch_size': CategoricalParameter([10, 16, 20]),
     'epochs': CategoricalParameter([5, 10])
 }
-`
+```
 
 2- Warm Start Hyperparameter Tuning
 to extend the hyperparameter tuning job
@@ -48,11 +49,13 @@ to narrow the range of hyperparameters values and exclude `epoch` from the set o
 #static hyperparameters
 hyperparameters = {'epochs':'6'}
 
+```json
 hyperparameter_ranges = {
     'lr': ContinuousParameter(0.015, 0.125, scaling_type='Logarithmic'),
     'batch_size': CategoricalParameter([16, 20, 30]),
     'test_batch_size': CategoricalParameter([16, 20])
 }
+```
 </pre>
 
 4- Second Warm Start Hyperparameter Tuning
@@ -63,10 +66,12 @@ hyperparameters = {'epochs':'6', 'test_batch_size':'20'}
 </pre>
 
 <pre>
+```json
 hyperparameter_ranges = {
     'lr': ContinuousParameter(0.120, 0.125, scaling_type='Logarithmic'),
     'batch_size': CategoricalParameter([20, 30])
 }
+```
 </pre>
 
 The Table bellow shows the result of all hyperparameter tuning jobs ordered by final objective value.
@@ -93,11 +98,7 @@ The API allows the user to use the model to classify a yoga pose in an image fil
 
 ### API Workflow:
 
-API DIAGRAM HERE!.........................................
 ![API diagram](./hyperparametertunning-table.jpeg)
-(https://github.com/fsoaresantos/Yoga-pose-Image-Classification-Project/blob/4a56a8952835b647fb987914805fd0b57348019c/hyperparametertunning-table.jpeg)
-(https://github.com/fsoaresantos/Yoga-pose-Image-Classification-Project/blob/4a56a8952835b647fb987914805fd0b57348019c/hyperparametertunning-table.jpeg?raw=true)
-(https://github.com/fsoaresantos/Finetuning-a-custom-Image-Classification-Model-using-a-custom-dataset-and-PyTorch-in-AWS-SageMaker/blob/main/Screenshot-completed-training-jobs-2022-07-29.jpeg?raw=true)
 
 **Figure 2**: Yoga pose API diagram
 <br />
@@ -115,13 +116,13 @@ HTML code <---> AWS Lambda <---> API Gateway <---> webapp (user)
 
 ## Important links
 
-* [📚 Yoga Pose API documentation](./yoga-pose-api.md)
+* [:notebook: Yoga Pose API documentation](./yoga-pose-api.md)
 * [:scroll: 3-channel RGB mode image convertion method](./convert_image_mode2rgb.ipynb)
 * [:open_file_folder: RGB-only Yoga Pose Dataset](https://www.kaggle.com/datasets/franciscadossantos/rgb-only-yoga-pose-dataset)
-* [:technologist: Yoga Pose API](https://j4ddwyyv1k.execute-api.us-east-1.amazonaws.com/DEV/getyogaapp)
+* [:lotus_position: Yoga Pose API](https://j4ddwyyv1k.execute-api.us-east-1.amazonaws.com/DEV/getyogaapp)
 * [:woman_student: Udacity's AWS Machine Learning Engineer Nanodegree](https://www.udacity.com/course/aws-machine-learning-engineer-nanodegree--nd189)
 * [:gear: AWS](https://aws.amazon.com/)
 
 ## Get in touch
 
-* [🏢 LinkedIn](https://www.linkedin.com/in/francisca-dos-santos-bronner/)
+* [:speaking_head: LinkedIn](https://www.linkedin.com/in/francisca-dos-santos-bronner/)
