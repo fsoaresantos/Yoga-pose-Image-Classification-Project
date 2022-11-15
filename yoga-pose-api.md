@@ -1,6 +1,6 @@
 # Yoga Pose API #
 
-This API allows you to classify a yoga pose in an image file.
+This API allows you to classify a image of a yoga pose by submiting an image file.
 
 The API is available at `https://j4ddwyyv1k.execute-api.us-east-1.amazonaws.com/DEV/getyogaapp`
 
@@ -12,7 +12,7 @@ GET `https://j4ddwyyv1k.execute-api.us-east-1.amazonaws.com/DEV/getyogaapp`
 
 The response body will contain the API html page.
 
-### Request a Classification ###
+### Request a classification ###
 
 POST `https://j4ddwyyv1k.execute-api.us-east-1.amazonaws.com/DEV/getyogaapp`
 
@@ -40,18 +40,19 @@ body: {
 ```
 
 Example 2: no data is submited - user chose to use an image from the validation dataset
-```json
+
 {
 htmlMethod: POST
 headers: {"Content-Type": "application/json"}
-
+```json
 body: {
     "data": "",
     "ground_truth": "",
     "is_user_data": ""
 }
-}
 ```
+}
+
 
 The response body will be in JSON format and will contain the input image, the classifier prediction and the wikipedia page summary, if any, of the predicted value 
 
