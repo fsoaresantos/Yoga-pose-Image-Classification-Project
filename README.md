@@ -29,7 +29,7 @@ To know more about the convertion methods used to transform the images mode see 
 First the dataset is splited in train, validation, and test sets (with respective proportions of 0.7, 0.1, 0.2). Manifest files are created and the data is uploaded to s3.
 The model is finetuned in AWS Sagemaker using PyTorch as ML framework. Finetuning is performed in 4 steps for different ranges of the following hyperparameters: epoch, batch size, test batch size, and learning rate as described bellow:
 
-1- Hyperparameter Tuning Job
+1. Hyperparameter Tuning Job
 
 ```
 hyperparameter_ranges = {
@@ -40,12 +40,11 @@ hyperparameter_ranges = {
 }
 ```
 
-2- Warm Start Hyperparameter Tuning
-<br />
+2. Warm Start Hyperparameter Tuning
 
 Performed to broad the possibilities of hyperparameters tuned.
 
-3- Second Hyperparameter Tuning Job
+3. Second Hyperparameter Tuning Job
 
 In this step the hyperparameter `epoch` is excluded from the set of hyperparameter to be tuned and its value is kept static and equal to 6.
 In addition, the range of hyperparameters to be tuned is narrowed to an interval that showed better performance in the previous step.
@@ -61,8 +60,7 @@ hyperparameter_ranges = {
 }
 ```
 
-4- Second Warm Start Hyperparameter Tuning
-<br />
+4. Second Warm Start Hyperparameter Tuning
 
 In this step `test_batch_size` is excluded from the set of hyperparameter to be tuned and its value is kept static and equal to 20.
 The range of values of `batch_size` to be tuned is narrowed based on results of previous step.
