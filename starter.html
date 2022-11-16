@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lan="en">
+    <head>
+        <title>Yoga pose Identifier</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="author" content="Francisca Soares dos Santos B."/>
+        <meta name="title" property="og:title" content="Yoga pose Identifier webapp - starter"/>
+        <meta name="description" property="og:description" content="Body posture image classifier app"/>
+        <style>
+            .header h1 {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                color: rgb(172, 30, 80);
+            }
+
+            .header h2 {
+                font-family: 'Quicksand', sans-serif;
+                color: rgb(172, 30, 80);
+                font-weight: 200;
+            }
+
+            .line {
+                border: 1px rgb(246, 137, 175);
+                border-style: solid;
+                background-color: rgb(172, 30, 80);
+            }
+
+            .display-image{
+                width: 265px;
+                height: 265px;
+                padding: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                font-family: 'Quicksand', sans-serif;
+                font-weight: 500;
+                font-size: 20px;
+                border:4px solid rgb(172, 30, 80);
+                border-radius: 10px;
+                background-position: center;
+                background-size: contain;
+            }
+
+            .display-image__thumb {
+                width: 100%;
+                height: 100%;
+                object-fit: none;
+                border-radius: 10px;
+                overflow: hidden;
+                background-color: rgb(247, 233, 238);
+                background-size: contain;
+                position: relative;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            .display-image__thumb::after {
+                content: attr(data-label);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 5px 0;
+                color: #ffffff;
+                background: rgba(0, 0, 0, 0.40);
+                font-size: 14px;
+                text-align: center;
+            }
+
+
+            .container {
+                position: relative;
+                height: 10px;
+                border-radius: 5px;
+                background-color: rgb(247, 233, 238);
+            }
+
+            .container .run-classifier__loader {
+                position: absolute;
+                height: 100%;
+                border-radius: 5px;
+                background-color:  rgb(172, 30, 80); 
+            }
+
+            #show-animation {
+                animation: loading-animation 10s forwards;
+            }
+
+            @keyframes loading-animation {
+                0% {width: 0%;}
+                100% {width: 100%;}
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div class="header">
+                <h1>Yoga pose Identifier</h1>
+                <h2>An application to classify body posture images</h2>
+
+                <p style="font-family:'Times New Roman', Times, serif;"><b>You can either submit an image of you own or test the model with a random image of our validation set. (To use one of our images click <u>Classify</u> button bellow)</b></p>
+                <p><b>To submit your own image click <u>Choose File</u> to upload your file then click <u>Classify</u> button</b></p>
+
+                <form method="post" enctype="multipart/form-data" name="userdata" >
+                    <table cellpadding="10", cellspacing="20">
+                        <tr>
+                            <td>
+                                <div class="display-image">
+                                    <input type="file" name="uplFile" class="display-image__input" accept="image/*">
+                                </div>
+
+                                <p><b>Click <u>Classify</u> to submit your image or to test one of our images</b></p>
+                                <div class="run-classifier">
+                                    <input type="text" id="groundtruth" class="run-classifier__groundtruth" placeholder="Ground Truth (optional)" value="">
+                                    <input type="submit" class="run-classifier__input" value="Classify">
+                                </div>
+                            </td>
+                            <td>
+                                <!--RENDER OUTPUT (model output) PART-->
+                                <h3 class="wiki_title" style="color:rgb(112, 84, 94); font-family:'Quicksand', sans-serif; text-align: left;"><u></u></h3>
+                                <p class="wiki_summary" style="color:rgb(112, 84, 94); font-family:'Quicksand', sans-serif; text-align: left;"></p>
+                                <p class="source" style="color:rgb(112, 84, 94); font-family:'Quicksand', sans-serif; text-align: left;"><em></em></p>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+                <div class="container">
+                    <div class="run-classifier__loader"></div>
+                </div>
+
+                <div class="reset-webapp">
+                    <p style="color:rgb(84, 78, 80);"><b>To upload a new image click <u>Reset</u> button</b></p>
+                    <button type="button" onclick="reloadThePage()">Reset</button>
+                </div>
+
+                <script>
+                    const body = new Map();
+                    body.set("is_user_data", ""); //type string, true if user have uploaded a file, false (empty) otherwise
+                    body.set("data", ""); //type bytes (base64 encoded image) #OR None
+                    //console.dir(body)
+
+                    document.querySelectorAll(".display-image__input").forEach(inputElement => {
+                        const uploadedElement = inputElement.closest(".display-image");
+
+                        uploadedElement.addEventListener("change", e => {
+                            e.preventDefault();
+                            //console.log(e)
+                            //console.log(e.target.files[0])
+                            if (e.target.files.length) {
+                                inputElement.files = e.target.files;
+                                updateThumbnail(uploadedElement, e.target.files[0]);
+                            }
+                        });
+                    });
+
+                    document.querySelector(".run-classifier__input").addEventListener("click", e => {
+                        e.preventDefault();
+                    
+                        const gt = document.querySelector(".run-classifier__groundtruth").value;
+                        body.set("ground_truth", gt); //type string (given by the user) or empty
+                        
+                        document.querySelector("form").reset();
+                        //call function to send data to endpoint (POST)
+                        sendData(body);
+
+                        progressBar();
+
+                        //getData();
+                    });
+
+
+                    const progressBar = async () => {
+                        let loader = document.querySelector(".run-classifier__loader");
+                        loader.setAttribute("id", "show-animation");
+                    }
+
+
+                    function grabData(file) {
+                        return new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                                let user_data = reader.result;
+                                // return base64 encoded image
+                                resolve(user_data);
+                            };
+                            reader.readAsDataURL(file);
+                        })
+                    }
+
+
+                    /**
+                     * 
+                     * @param {HTMLElement} uploadedElement 
+                     * @param {HTMLElement} classifierElement 
+                     * @param {HTMLElement} displayElement 
+                     * @param {HTMLElement} wikiElement_title 
+                     * @param {HTMLElement} wikiElement_summary 
+                     * @param {File} file 
+                     */
+                    async function updateThumbnail(uploadedElement, file) {
+
+                        let thumbnailElement = uploadedElement.querySelector(".display-image__thumb");
+
+                        if (uploadedElement.querySelector(".display-image__input")) {
+                            uploadedElement.querySelector(".display-image__input").remove();
+                        }
+
+                        if (!thumbnailElement) {
+                            thumbnailElement = document.createElement("div");
+                            thumbnailElement.classList.add("display-image__thumb");
+                            uploadedElement.appendChild(thumbnailElement);
+                        }
+                        
+                        thumbnailElement.dataset.label = file.name;
+
+                        let user_image = "";
+                        body.set("is_user_data", "true"); //type string, true if user have uploaded a file, false (empty) otherwise
+
+                        // grab image data and show thumbnail for image files only
+                        if (file.type.startsWith("image/")) {
+                            //grab data
+                            const user_data = await grabData(file);
+                            thumbnailElement.style.backgroundImage = `url('${ user_data }')`;
+                            console.log("1° DATAURL: " + `url('${ user_data }')`);
+                            user_image = user_data.split(",")[1];
+                        } else {
+                            alert("Please upload a valid image file OR click the Classify button to use one of our images.");
+                            thumbnailElement.style.backgroundImage = null;
+                        }
+                        
+                        console.log("is user data? ", body.get("is_user_data"));
+
+                        body.set("data", user_image); //type bytes (base64 encoded image) #OR None
+                    }
+
+
+                    const sendHttpRequest = (method, url, inputdata) => {
+                        const promise = new Promise((resolve, reject) => {
+                            const xhrrequest = new XMLHttpRequest();
+                            xhrrequest.open(method, url);
+                            
+                            xhrrequest.responseType = "json";
+                    
+                            xhrrequest.setRequestHeader("Content-Type", "application/json");
+
+                            xhrrequest.onload = () => {
+                                if(xhrrequest.status < 400) {
+                                    resolve(xhrrequest.response);
+                                } else {
+                                    reject(xhrrequest.response);
+                                }
+                            };
+                    
+                            xhrrequest.onerror = () => {
+                                reject("POST request failled");
+                            };
+                            console.log(JSON.stringify(inputdata));
+                            xhrrequest.send(JSON.stringify(inputdata));
+                        });
+                        return promise;
+                        
+                    };
+                    
+                    
+                    const getData = () => {
+                        sendHttpRequest("GET", "https://j4ddwyyv1k.execute-api.us-east-1.amazonaws.com/DEV/getyogaapp").then((response) => {
+                            //console.log(response);
+                        });
+                    
+                    };
+                    
+                    
+                    const sendData = () => {
+                        const inputdata = Object.fromEntries(body)
+                        sendHttpRequest("POST", "https://j4ddwyyv1k.execute-api.us-east-1.amazonaws.com/DEV/getyogaapp", inputdata).then(response => {
+                            const displayElement = document.querySelector(".display-image");
+                            let thumbnailElement = displayElement.querySelector(".display-image__thumb");
+                            
+                            if (displayElement.querySelector(".display-image__input")) {
+                                displayElement.querySelector(".display-image__input").remove();
+                            }
+
+                            if (!thumbnailElement) {
+                                thumbnailElement = document.createElement("div");
+                                thumbnailElement.classList.add("display-image__thumb");
+                                displayElement.appendChild(thumbnailElement);
+                            }
+                            
+                            thumbnailElement.dataset.label = `GroundTruth: ${ response["groundtruth"]} | Prediction: ${ response["prediction"]}`;
+                            
+                            const picture = "data:image/jpeg;base64,".concat(response["data"]);
+                            console.log("2° DATAURL: ", `url('${ picture }')`);
+                            thumbnailElement.style.backgroundImage = `url('${ picture }')`;
+                            
+                            const wikiElement_title = document.querySelector(".wiki_title");
+                            const wikiElement_summary = document.querySelector(".wiki_summary");
+                            if(response["exception"]) {
+                                wikiElement_title.innerHTML = response["title"];
+                                wikiElement_summary.innerHTML = "Sorry, there is no wikipedia content to show here!";
+                                document.querySelector(".source").innerHTML = response["exception"];
+                            } else {
+                                wikiElement_title.innerHTML = response["title"];
+                                wikiElement_summary.innerHTML = response["summary"];
+                                document.querySelector(".source").innerHTML = "Source: Wikipedia";
+                            }
+                        }).catch(e => {
+                            throw new Error(`Fetching problem: ${e.message}`);
+                        })
+                    }
+                    
+
+                    function reloadThePage() {
+                        window.location.reload(); //(true); --> reload from the server
+                    }
+                </script>
+            </div>
+
+            <br>
+            <hr class="line">
+            <h4>Possible body postures that you can test are:</h4>
+            <table cellpadding="10", cellspacing="10">
+                <tr>
+                    <th>adho mukha svanasana</th>
+                    <th>adho mukha vriksasana</th>
+                    <th>agnistambhasana</th>
+                    <th>ananda balasana</th>
+                    <th>anantasana</th>
+                    <th>anjaneyasana</th>
+                </tr>
+                <tr>
+                    <th>ardha bhekasana</th>
+                    <th>ardha chandrasana</th>
+                    <th>ardha matsyendrasana</th>
+                    <th>ardha pincha mayurasana</th>
+                    <th>ardha uttanasana</th>
+                    <th>ashtanga namaskara</th>
+                </tr>
+                <tr>
+                    <th>astavakrasana</th>
+                    <th>baddha konasana</th>
+                    <th>bakasana</th>
+                    <th>balasana</th>
+                    <th>bhairavasana</th>
+                    <th>bharadvajasana i</th>
+                </tr>
+                <tr>
+                    <th>bhekasana</th>
+                    <th>bhujangasana</th>
+                    <th>bhujapidasana</th>
+                    <th>bitilasana</th>
+                    <th>camatkarasana</th>
+                    <th>chakravakasana</th>
+                </tr>
+                <tr>
+                    <th>chaturanga dandasana</th>
+                    <th>dandasana</th>
+                    <th>dhanurasana</th>
+                    <th>durvasasana</th>
+                    <th>dwi pada viparita dandasana</th>
+                    <th>eka pada koundinyanasana i</th>
+                </tr>
+                <tr>
+                    <th>eka pada koundinyanasana ii</th>
+                    <th>eka pada rajakapotasana</th>
+                    <th>eka pada rajakapotasana ii</th>
+                    <th>ganda bherundasana</th>
+                    <th>garbha pindasana</th>
+                    <th>garudasana</th>
+                </tr>
+                <tr>
+                    <th>gomukhasana</th>
+                    <th>halasana</th>
+                    <th>hanumanasana</th>
+                    <th>janu sirsasana</th>
+                    <th>kapotasana</th>
+                    <th>krounchasana</th>
+                </tr>
+                <tr>
+                    <th>kurmasana</th>
+                    <th>lolasana</th>
+                    <th>makara adho mukha svanasana</th>
+                    <th>makarasana</th>
+                    <th>malasana</th>
+                    <th>marichyasana i</th>
+                </tr>
+                <tr>
+                    <th>marichyasana iii</th>
+                    <th>marjaryasana</th>
+                    <th>matsyasana</th>
+                    <th>mayurasana</th>
+                    <th>natarajasana</th>
+                    <th>padangusthasana</th>
+                </tr>
+                <tr>
+                    <th>padmasana</th>
+                    <th>parighasana</th>
+                    <th>paripurna navasana</th>
+                    <th>parivrtta janu sirsasana</th>
+                    <th>parivrtta parsvakonasana</th>
+                    <th>parivrtta trikonasana</th>
+                </tr>
+                <tr>
+                    <th>parsva bakasana</th>
+                    <th>parsvottanasana</th>
+                    <th>pasasana</th>
+                    <th>paschimottanasana</th>
+                    <th>phalakasana</th>
+                    <th>pincha mayurasana</th>
+                </tr>
+                <tr>
+                    <th>prasarita padottanasana</th>
+                    <th>purvottanasana</th>
+                    <th>salabhasana</th>
+                    <th>salamba bhujangasana</th>
+                    <th>salamba sarvangasana</th>
+                    <th>salamba sirsasana</th>
+                </tr>
+                <tr>
+                    <th>savasana</th>
+                    <th>setu bandha sarvangasana</th>
+                    <th>simhasana</th>
+                    <th>sukhasana</th>
+                    <th>supta baddha konasana</th>
+                    <th>supta matsyendrasana</th>
+                </tr>
+                <tr>
+                    <th>supta padangusthasana</th>
+                    <th>supta virasana</th>
+                    <th>tadasana</th>
+                    <th>tittibhasana</th>
+                    <th>tolasana</th>
+                    <th>tulasana</th>
+                </tr>
+                <tr>
+                    <th>upavistha konasana</th>
+                    <th>urdhva dhanurasana</th>
+                    <th>urdhva hastasana</th>
+                    <th>urdhva mukha svanasana</th>
+                    <th>urdhva prasarita eka padasana</th>
+                    <th>ustrasana</th>
+                </tr>
+                <tr>
+                    <th>utkatasana</th>
+                    <th>uttana shishosana</th>
+                    <th>uttanasana</th>
+                    <th>utthita ashwa sanchalanasana</th>
+                    <th>utthita hasta padangustasana</th>
+                    <th>utthita parsvakonasana</th>
+                </tr>
+                <tr>
+                    <th>utthita trikonasana</th>
+                    <th>vajrasana</th>
+                    <th>vasisthasana</th>
+                    <th>viparita karani</th>
+                    <th>virabhadrasana i</th>
+                    <th>virabhadrasana ii</th>
+                </tr>
+                <tr>
+                    <th>virabhadrasana iii</th>
+                    <th>virasana</th>
+                    <th>vriksasana</th>
+                    <th>vrischikasana</th>
+                    <th>yoganidrasana</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
