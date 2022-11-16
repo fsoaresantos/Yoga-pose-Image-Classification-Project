@@ -109,7 +109,7 @@ The API allows the user to use the model to classify a yoga pose in an image fil
 
 ## Results/Insights and possible applications
 
-The training process was performed over 30 epochs only, due to resource restrictions. The model achieved an average test loss of 0.128 and a test accuracy of 34.466%. However, it's possible that an increase in the number of epochs to over 50 will result in a better model performance.
+The training process was performed over 30 epochs and 55 epochs. The model achieved an average test loss of 0.128 and a test accuracy of 34.466% when trained for 30 epochs. Test accuracy did not significantly improve when training for 55 epochs (average test loss of 0.129 and a test accuracy of 34.775%).
 
 AI can detect yoga pose and could potentially be used as an aid to accelerometers and gyroscope (which detects the speed and direction of movements) in fitness tracking applications, like Nintendo's Ring Fit Adventure, for instance, and many Yoga applications, to supervise the correct positioning of the body (body posture) during physical exercises.
 
