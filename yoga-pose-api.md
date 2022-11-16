@@ -47,6 +47,22 @@ The response body will be in JSON format and will contain the input image, the c
  - `summary` - string
  - `exception` - string
 
+*Figure 1* bellow illustrate the api interface output to a request without submiting an image file.
+
+---
+
+![API interface output eg01](./Screenshot-yogaapi-01.jpeg)
+
+**Figure 1**: Yoga pose API interface output
+<br />
+<br />
+
+![API interface output eg02](./Screenshot-yogaapi-02.jpeg)
+
+**Figure 2**: Yoga pose API interface output
+<br />
+<br />
+
 ---
 
 #### Possible errors ####
