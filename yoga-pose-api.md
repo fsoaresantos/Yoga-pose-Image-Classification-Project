@@ -47,7 +47,7 @@ The response body will be in JSON format and will contain the input image, the c
  - `summary` - string
  - `exception` - string
 
-*Figure 1* bellow illustrate the api interface output to a request without submiting an image file.
+*Figures 1* and *2* bellow illustrate the api interface output to two requests without submiting an image file.
 
 ---
 
