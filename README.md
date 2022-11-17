@@ -11,6 +11,14 @@ The model is submited and deployed in AWS Sagemaker.
 
 The code is written in Sagemaker Python SDK, with few lines in boto3 and AWS CLI for illustration or simplicity.
 
+The IPython notebooks represent *submission scripts*. They contain code to download and preprocess the data and the Sagemaker APIs setup to train and deploy the model.
+
+The *training scrips* `hpo.py` and `train_model.py` contain the model definition and the training and validation code. These scripts specify hyperparameters and environmental variables through parser arguments whereas the *submission script* reads hyperparameters and environmental variables through command line arguments (i.e. at runtime).
+
+In pecific, the `hpo.py` script is used for performing hyperparameter tuning and training the final model. It contains the code to train the model and save it to S3 (via `torch.save(model.state_dict(), "model_dir/model.pth")`). The `train_model.py` contains code to perform model profiling and debugging.
+
+The *inference script* `inference.py` contains the code to the Sagemaker Model Server functions for deserializing the trained model and load it for inference (via `model.load_state_dict(torch.load(model_dir))`) and for translating an endpoint request to an inference call to the model. Respectivelly, model loading function (`model_fn`) and model serving functions (`input_fn` and `prediction_fn`).
+
 ## Model creation
 The project was shared into 4 notebooks to facilitate comprehension of the ML pipeline.
 The notebooks illustrate the steps of data ETL, model definition and hyperparameter tuning, profiler and debugger, and model training and deployment.
@@ -23,7 +31,7 @@ The original Yoga Pose Image Classification dataset is also available in kaggle 
 
 The transfrmed dataset, used to finetune the model in this project, is composed of 3-channel RGB mode images only, and can be downloaded from kaggle: [franciscadossantos/rgb-only-yoga-pose-dataset](https://www.kaggle.com/datasets/franciscadossantos/rgb-only-yoga-pose-dataset).
 
-To know more about the convertion methods used to transform the images mode to 3-channel RGB mode see the notebook [convert_image_mode2rgb.ipynb](./convert_image_mode2rgb.ipynb).
+To know more about the conversion methods used to transform the images mode to 3-channel RGB mode see the notebook [convert_image_mode2rgb.ipynb](./convert_image_mode2rgb.ipynb).
 
 
 ### 2) Model definition and Hyperparameter tuning notebook: `hyperparameter_tuning.ipynb`
